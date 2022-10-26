@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+#header-navbar{
+  background-color: #4982b2;
+}
+
+.card{
+  background-color:#4982b2;
+}
+
+a.brand-logo {
+  padding-left: 2%;
+}
+.remove{
+  background-color:#e91e63;
+}
+.remove:hover {
+background-color:#c2185b;
+}
+
+.edit{
+  background-color: #27a69a;
+}
+
+.edit:hover {
+  background-color: #0b8377;
+}
+
+.card-action {
+  text-align: right;
+}
+.like {
+  position: relative;
+  top: 10px;
+}
+
+.random-image {
+  background-color: #4982b2;
+}
+
+.random-image:hover {
+  background-color: #25557c;
+}
+
+

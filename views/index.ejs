@@ -1,0 +1,85 @@
+<%- include('includes/head.ejs') %>
+
+
+  <main class="center container">
+    <% if (posts.length> 0) { %>
+      <% for (let post of posts) { %>
+        <div class="row">
+          <div class="col s1 m6">
+            <div class="card">
+              <div class="card-content white-text">
+                <p>
+                  <%= post.content %>
+                </p>
+              </div>
+              <div class="card-image">
+                <img src="<%= post.imageUrl %>">
+              </div>
+              <div class="card-action">
+                <a class="waves-effect btn edit modal-trigger" href="#edit-item<%=post.id%>">Edit</a>
+                <a class="waves-effect modal-trigger btn remove" href="#remove-item<%=post.id%>">Remove</a>
+                <i class="material-icons like">favorite_border</i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal Structure -->
+        <div id="remove-item<%=post.id%>" class="modal">
+          <div class="modal-content">
+            <h4>Are you sure you want to remove your Meow?</h4>
+          </div>
+          <div class="modal-footer">
+            <form action="/post/delete/<%= post.id%>" method="POST">
+              <button class="btn waves-effect waves-light remove" type="submit" name="action">Yes :(</button>
+              <a href="#!" class="modal-close waves-effect waves-green btn-flat">No</a>
+            </form>
+          </div>
+        </div>
+
+        <div id="edit-item<%=post.id%>" class="modal">
+          <div class="modal-content">
+            <form action="/post/edit/<%= post.id%>" method="POST">
+              <label for="content">What's up</label>
+              <input type="text" name="content" id="content" class="autocomplete content" value="<%= post.content%>">
+              <label for="imageUrl">What's your mood</label>
+              <input type="text" name="imageUrl" id="imageUrl" class="autocomplete image" value="<%= post.imageUrl%>">
+              <div class="modal-footer">
+                <button class="btn waves-effect waves-light modal-close edit-submit" type="submit" name="action">Edit
+                  <i class="material-icons right">send</i>
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+  <% } %>
+</main>
+    <% } else { %>
+      <h4 class="flow-text center">You have not create any tweets yet</h4>
+      <% } %>
+
+        <!-- Modal Structure -->
+        <div id="modal1" class="modal">
+          <div class="modal-content">
+            <div class="input-field col s12">
+              <h4 class="center">Show us you petto!</h4>
+              <form action="/post" method="POST">
+                <label for="content">Tell few words about him</label>
+                <input type="text" name="content" id="content" class="autocomplete content">
+                <label for="imageUrl">Paste the URL to the image</label>
+                <input type="text" class="create-post" name="imageUrl" id="imageUrl" class="autocomplete image">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn waves-effect waves-light random-image" type="button" name="action">Random image
+              <i class="material-icons right">close</i>
+            </button>
+
+            <button class="btn waves-effect waves-light modal-close" type="submit" name="action">Submit
+              <i class="material-icons right">send</i>
+            </button>
+          </div>
+          </form>
+        </div>
+        <%- include('includes/end.ejs') %>
