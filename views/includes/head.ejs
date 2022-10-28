@@ -21,9 +21,16 @@
         <div class="nav-wrapper">
         <a href="#!" class="brand-logo">My diary</a>
         <ul class="right hide-on-med-and-down">
-            <li><a href="/login"><i class="material-icons left">directions_run</i>Login</a></li>
-            <!-- Dropdown Trigger -->
+            <% if(!user){%>
+            <li><a href="/login"><i class="material-icons left">directions_run</i>Google Login</a></li>
+            <% } else {%>
+            <li><a href="#">Greeting, <%= user.name %></a></li>
+            <li><img src="<%= user.imageUrl %>" alt=""></li>
             <li><a class="waves-effect waves-light btn modal-trigger pulse" href="#modal1"><i class="material-icons left">edit</i>Tweet</a></button></li>
+            <li><a href="/logout"><i class="material-icons left">airline_seat_individual_suite</i>Logout</a></li>
+            <%}%>
+            <!-- Dropdown Trigger -->
+            
         </ul>
         </div>
     </nav>

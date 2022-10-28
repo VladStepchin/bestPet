@@ -7,9 +7,10 @@ const passport = require('passport');
 const cors = require('cors');
 // const session = require('express-session');
 const cookieSession = require('cookie-session');
-const postsRouter = require('./routes/posts')
+const postsRouter = require('./routes/posts');
+const authRouter = require('./routes/auth');
+
 const app = express();
-require("./utils/passport-setup")
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -32,36 +33,7 @@ app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 app.use(postsRouter)
-
-const isLoggedIn = (req, res, next) => {
-  if (req.user)
-      next()
-  else
-      res.sendStatus(401)
-}
-
-
-
-app.get('/failed',(req,res) => {res.render('failed',{user: req.user?.displayName})})
-app.get('/good', isLoggedIn, (req,res) => {res.render('failed',{user:req.user?.displayName})})
-
-app.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-
-  app.get('/google/callback', passport.authenticate('google', { failureRedirect: '/failed' }),
-  (req, res) => {
-      // Successful authentication, redirect home.
-        res.redirect('/good');
-    });
-
-    app.get("/logout", (req, res) => {
-      req.session = null;
-      req.logout(() => {
-          console.log('super');
-      });
-      console.log('yOU HAVE BEEN LOGGED OUT');
-      res.redirect('/');
-  })
-
+app.use(authRouter)
 
 mongoose
   .connect(MONGODB_URI)
