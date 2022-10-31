@@ -2,7 +2,7 @@
 
 
   <main class="center container">
-    <% if (posts.length > 0) { %>
+    <% if (posts.length> 0) { %>
       <% for (let post of posts) { %>
         <div class="row">
           <div class="col s1 m6">
@@ -53,33 +53,36 @@
             </form>
           </div>
         </div>
-  <% } %>
-</main>
-    <% } else { %>
-      <h4 class="flow-text center">You have not create any tweets yet</h4>
-      <% } %>
+        <% } %>
+  </main>
+  <% } else { %>
+    <h4 class="flow-text center">You have not create any tweets yet</h4>
+    <% } %>
 
-        <!-- Modal Structure -->
-        <div id="modal1" class="modal">
-          <div class="modal-content">
-            <div class="input-field col s12">
-              <h4 class="center">Show us you petto!</h4>
-              <form action="/post" method="POST">
-                <label for="content">Tell few words about him</label>
-                <input type="text" name="content" id="content" class="autocomplete content">
-                <label for="imageUrl">Paste the URL to the image</label>
-                <input type="text" class="create-post" name="imageUrl" id="imageUrl" class="autocomplete image">
-            </div>
+      <!-- Modal Structure -->
+      <div id="modal1" class="modal">
+        <div class="modal-content">
+          <div class="input-field col s12">
+            <h4 class="center">Show us you petto!</h4>
+            <form action="/post" method="POST">
+              <label for="content">Tell few words about him</label>
+              <input type="text" name="content" id="content" class="autocomplete content">
+              <label for="imageUrl">Paste the URL to the image</label>
+              <input type="text" class="create-post" name="imageUrl" id="imageUrl" class="autocomplete image">
           </div>
-          <div class="modal-footer">
-            <button class="btn waves-effect waves-light random-image" type="button" name="action">Random image
-              <i class="material-icons right">close</i>
-            </button>
-
-            <button class="btn waves-effect waves-light modal-close" type="submit" name="action">Submit
-              <i class="material-icons right">send</i>
-            </button>
-          </div>
-          </form>
         </div>
-        <%- include('includes/end.ejs') %>
+        <div class="modal-footer">
+          <button class="btn waves-effect waves-light random-image" type="button" name="action">Random image
+            <i class="material-icons right">close</i>
+          </button>
+
+          <button class="btn waves-effect waves-light modal-close" type="submit" name="action">Submit
+            <i class="material-icons right">send</i>
+          </button>
+        </div>
+        </form>
+      </div>
+
+     
+      </div>
+      <%- include('includes/end.ejs') %>

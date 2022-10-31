@@ -1,13 +1,14 @@
 const Post = require('../models/post');
 const Utils = require('../utils/utils');
 
+
 const randomNumberTo30 = () => {
     return Math.floor(Math.random()*30);
   }
 
 exports.getAllPosts = async (req, res, next) => {
     console.log('Request User', req.user);
-    let authUser = req.session.passport?.user;
+    let authUser = req.user;
     let posts = await Post.find();
     res.render('index', { 
         pageTitle: 'Index',
@@ -48,8 +49,4 @@ exports.getRandomImage = async (req, res, next) => {
         imageUrl = result.data[randomNumberTo30()].download_url;
 
     res.json({imageUrl : imageUrl})
-}
-
-exports.getProtected = async(req, res, next) => {
-    res.render('protected', { pageTitle: "Protected"})
 }

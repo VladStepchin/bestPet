@@ -1,0 +1,12 @@
+# GET http://localhost:3000?tenant=develop
+# Content-Type: application/json
+
+# {
+#     "tenant":"develop"
+# }
+
+###$
+
+get http://localhost:3000/users
+
+

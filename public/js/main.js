@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 const randomImageButton = document.getElementsByClassName("random-image")[0];
 
-randomImageButton.addEventListener("click", async () => {
+randomImageButton.addEventListener("click", async (e) => {
   let imageUrlInput = document.getElementsByClassName('create-post')[0];
 
   let randomImage = await fetch("/post/random-image").then(responce => responce.json())
