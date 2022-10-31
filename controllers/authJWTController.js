@@ -1,8 +1,7 @@
 const Role = require ('../models/Role.js')
 const UserJWT = require('../models/UserJWT.js');
 const bcrypt = require('bcrypt');
-const {validationResult} = require('express-validator');
-const User = require('../models/GoogleUser.js');
+const { validationResult } = require('express-validator');
 const JWT = require('jsonwebtoken');
 require('dotenv').config()
 
