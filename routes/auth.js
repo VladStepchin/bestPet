@@ -32,24 +32,15 @@ router.get("/login/callback",passport.authenticate("google", { failureRedirect: 
   }
 );
 
-router.get("/logout", (req, res) => {req.session = null;
-    
-  req.logout(() => {
-    
-    console.log("super");
-  });
 
-  console.log("You have been logged out");
-  
-  res.redirect('/')
-
-});
 
 // -----------------------------------------------------
 // JWT AUTHORIZATION
 
+router.get("/logout", AuthJWTController.logOut);
 router.post("/loginJWT", AuthJWTController.loginJWT);
 router.post("/registrationJWT", AuthJWTController.registrationJWT);
 router.get("/users", authMiddleware.auth, AuthJWTController.getUsers);
+
 
 module.exports = router;

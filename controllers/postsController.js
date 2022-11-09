@@ -7,7 +7,6 @@ const randomNumberTo30 = () => {
   }
 
 exports.getAllPosts = async (req, res, next) => {
-    console.log('Request User', req.user);
     let authUser = req.user;
     let posts = await Post.find();
     res.render('index', { 
@@ -18,6 +17,7 @@ exports.getAllPosts = async (req, res, next) => {
 }
 
 exports.postPost = async (req, res, next) => {
+    debugger
     let post = new Post({
         content: req.body.content,
         imageUrl: req.body.imageUrl

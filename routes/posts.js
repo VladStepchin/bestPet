@@ -10,7 +10,7 @@ router.post('/post/edit/:postId', postsController.editPost)
 
 router.get('/', postsController.getAllPosts)
 
-router.get('/posts',authMiddleware.auth, postsController.getAllPosts)
+router.get('/posts', authMiddleware.auth, postsController.getAllPosts)
 
 router.get('/post/random-image',authMiddleware.auth, postsController.getRandomImage)
 

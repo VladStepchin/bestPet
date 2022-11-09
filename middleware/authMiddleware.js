@@ -1,4 +1,5 @@
 const JWT = require('jsonwebtoken');
+
 exports.auth = (req,res,next) => {
     if(req.user || req.method === 'OPTIONS'){
         return next();

@@ -1,10 +1,7 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const GoogleUser = require("../models/GoogleUser");
-
-const GOOGLE_CLIENT_SECRET_CLIENTID =
-  "190926277705-bfsu2isgdjj8eaa3nt77de1ugagcsmet.apps.googleusercontent.com";
-const GOOGLE_CLIENT_SECRET = "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";
+require('dotenv').config()
 
 // записує в кукі
 passport.serializeUser((user, done) => {
@@ -20,8 +17,8 @@ passport.deserializeUser(async (user, done) => {
 
 passport.use(
   new GoogleStrategy({
-      clientID: GOOGLE_CLIENT_SECRET_CLIENTID,
-      clientSecret: GOOGLE_CLIENT_SECRET,
+      clientID: process.env.GOOGLE_CLIENT_SECRET_CLIENTID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: "http://localhost:3000/login/callback",
     }, async (accessToken, refreshToken, profile, done) => {
         const authorizedUser = await GoogleUser.findOne({ googleId: profile.id });
