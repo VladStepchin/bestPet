@@ -1,9 +1,12 @@
-console.log("Hello! It is working");
+
 
 // initiate some of JS functionality of Materialize
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async ()=> {
+
   const modals = document.querySelectorAll(".modal");
   M.Modal.init(modals);
+  // check if the user is available
+  
 });
 
 

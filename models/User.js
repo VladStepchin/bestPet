@@ -2,7 +2,11 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const userJWTSchema = new Schema({
+const userSchema = new Schema({
+    googleId: {
+        type: String,
+        required :false,
+      },
     email:{
         type: String,
         unique: true,
@@ -10,7 +14,11 @@ const userJWTSchema = new Schema({
     },
     password:{
         type: String,
-        required: true,
+        required: false,
+    },
+    imageUrl: {
+        type:String,
+        required: false
     },
     roles:[{
         type:String,
@@ -18,4 +26,4 @@ const userJWTSchema = new Schema({
     }]
 })
 
-module.exports = mongoose.model('UserJWT', userJWTSchema)
+module.exports = mongoose.model('User', userSchema)

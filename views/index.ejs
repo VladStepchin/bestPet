@@ -15,11 +15,13 @@
               <div class="card-image">
                 <img src="<%= post.imageUrl %>">
               </div>
+              <% if(user?.id == post.userId) { %>
               <div class="card-action">
                 <a class="waves-effect btn edit modal-trigger" href="#edit-item<%=post.id%>">Edit</a>
                 <a class="waves-effect modal-trigger btn remove" href="#remove-item<%=post.id%>">Remove</a>
                 <i class="material-icons like">favorite_border</i>
               </div>
+             <%}%>
             </div>
           </div>
         </div>
@@ -41,9 +43,9 @@
           <div class="modal-content">
             <form action="/post/edit/<%= post.id%>" method="POST">
               <label for="content">What's up</label>
-              <input type="text" name="content" id="content" class="autocomplete content" value="<%= post.content%>">
+              <input type="text" name="content" class="autocomplete content" value="<%= post.content%>">
               <label for="imageUrl">What's your mood</label>
-              <input type="text" name="imageUrl" id="imageUrl" class="autocomplete image" value="<%= post.imageUrl%>">
+              <input type="text" name="imageUrl" class="autocomplete image" value="<%= post.imageUrl%>">
               <div class="modal-footer">
                 <button class="btn waves-effect waves-light modal-close edit-submit" type="submit" name="action">Edit
                   <i class="material-icons right">send</i>
