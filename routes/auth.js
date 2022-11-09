@@ -1,10 +1,10 @@
 const router = require("express").Router();
 const passport = require("passport");
-const AuthJWTController = require("../controllers/authJWTController");
+const AuthJWTController = require("../controllers/JWTAuthController");
 const { check } = require("express-validator");
 const authMiddleware = require("../middleware/authMiddleware");
 
-require("../controllers/authController");
+require("../controllers/GoogleAuthController");
 
 //research
 const isLoggedIn = (req, res, next) => {

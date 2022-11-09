@@ -1,12 +1,9 @@
 const Role = require("../models/Role.js");
-const UserJWT = require("../models/UserJWT.js");
+const User = require("../models/User.js");
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
-const User = require("../models/GoogleUser.js");
 const JWT = require("jsonwebtoken");
 require("dotenv").config();
-
-const { off } = require("../models/GoogleUser.js");
 
 const generateAccessToken = (id, roles, email) => {
   const payload = {
@@ -21,7 +18,7 @@ class AuthJWTController {
   static async registrationJWT(req, res) {
     try {
       const { email, password } = req.body;
-      const candidate = await UserJWT.findOne({ email });
+      const candidate = await User.findOne({ email });
 
       if (candidate) {
         return res
@@ -30,12 +27,13 @@ class AuthJWTController {
       }
       const hashedPassword = bcrypt.hashSync(password, 5);
       const userRole = await Role.findOne({ value: "ADMIN" });
-      const userJWT = new UserJWT({
+      const user = new User({
         email,
         password: hashedPassword,
+        imageUrl: '',
         roles: [userRole.value],
       });
-      await userJWT.save();
+      await user.save();
       return res.json({ message: "User has been successfully create" });
     } catch (err) {
       console.log(err);
@@ -45,7 +43,7 @@ class AuthJWTController {
   static async loginJWT(req, res) {
     try {
       const { email, password } = req.body;
-      const user = await UserJWT.findOne({ email });
+      const user = await User.findOne({ email });
 
       if (!user) {
         return res.status(400).json({ message: "The user has not been found" });
@@ -79,7 +77,7 @@ class AuthJWTController {
 
   static async getUsers(req, res) {
     try {
-      let users = await UserJWT.find();
+      let users = await User.find();
       res.json(users);
     } catch (err) {
       console.log(err);
