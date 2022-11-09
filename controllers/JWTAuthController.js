@@ -1,8 +1,10 @@
 const Role = require("../models/Role.js");
 const User = require("../models/User.js");
 const bcrypt = require("bcrypt");
-const { validationResult } = require("express-validator");
+// const { validationResult } = require("express-validator");
 const JWT = require("jsonwebtoken");
+const session = require('express-session');
+
 require("dotenv").config();
 
 const generateAccessToken = (id, roles, email) => {
@@ -53,13 +55,14 @@ class AuthJWTController {
       if (!validPassword) {
         return res.status(400).json({ message: "The password is incorrect" });
       }
-      const token = generateAccessToken(user._id, user.roles, user.email);
-
+      const token = await generateAccessToken(user._id, user.roles, user.email);
+      
+      console.log("TOKEN", token);
+      console.log("You have been successfully signed in");
       res.cookie("token", token, { httpOnly: true });
 
-      console.log("You have been successfully signed in");
-
-      return res.status(200).json({ token });
+      return res.redirect("/getPostsByUser")
+      
     } catch (err) {
       console.log(err);
       res.status(400).json({ message: "Login erroґ`r" });
@@ -67,11 +70,10 @@ class AuthJWTController {
   }
 
   static async logOut(req, res) {
+    res.clearCookie("token");
     req.logout((err) => {
       if (err) return err;
     });
-    res.clearCookie("token");
-
     return res.redirect("/");
   }
 

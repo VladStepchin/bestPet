@@ -2,7 +2,7 @@
 
 // initiate some of JS functionality of Materialize
 document.addEventListener("DOMContentLoaded", async ()=> {
-  
+
   const modals = document.querySelectorAll(".modal");
   M.Modal.init(modals);
   // check if the user is available
