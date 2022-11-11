@@ -1,0 +1,4 @@
+use("BestPet")
+
+// db.posts.updateMany({likes:0}}, {$set:{likedBy:[]}})
+db.posts.find()

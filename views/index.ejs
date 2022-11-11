@@ -18,10 +18,15 @@
               <% if(user?.id == post.userId) { %>
               <div class="card-action">
                 <a class="waves-effect btn edit modal-trigger" href="#edit-item<%=post.id%>">Edit</a>
-                <a class="waves-effect modal-trigger btn remove" href="#remove-item<%=post.id%>">Remove</a>
-                <i class="material-icons like">favorite_border</i>
+                <a class="waves-effect modal-trigger btn remove" href="#remove-item<%=post.id%>">Remove</a>                
+                <button class="waves-effect btn edit modal-trigger like-post tooltipped" data-position="right" data-tooltip="" data-id="<%=post.id%>"><i class="material-icons like">favorite_border</i><span class="likes-amount" data-id="<%=post.id%>"><%=post.likes%></span></button>
+                
               </div>
-             <%}%>
+              <%} else {%>
+                <div class="card-action">
+                  <button class="waves-effect btn like-post modal-trigger tooltipped" data-position="right" data-tooltip="" data-id="<%=post.id%>"><i class="material-icons like">favorite_border</i><span class="likes-amount" data-id="<%=post.id%>"><%=post.likes%></span></button>
+                </div>
+                <%}%>
             </div>
           </div>
         </div>
