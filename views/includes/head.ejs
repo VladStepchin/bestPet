@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><%= pageTitle %></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="/css/main.css"> 
@@ -19,7 +22,7 @@
     </ul>
     <nav id="header-navbar">
         <div class="nav-wrapper">
-        <a href="/" class="brand-logo">My diary</a>
+        <a href="/" class="brand-logo">The Best Pet</a>
         <ul class="right hide-on-med-and-down">
           <li><a href="/getPostsByUser">My posts</a></li>
             <% if(!user) {%>
@@ -44,10 +47,10 @@
             <h4 class="center">Registration</h4>
             <form action="/registrationJWT" method="POST">
               <label for="email">What is your email</label>
-              <input type="email" name="email" id="email-registration" class="autocomplete content">
+              <input type="email" name="email" id="email-registration" class="autocomplete content" autocomplete>
               <label for="password">What is your password</label>
-                <input type="password" class="password-registration" name="password" class="autocomplete password">
-                <button class="btn waves-effect waves-light modal-close" type="submit" name="action">Register</button>
+                <input type="password" class="password-registration" name="password" class="autocomplete password" autocomplete>
+                <button class="btn waves-effect wavwes-light modal-close" type="submit" name="action">Register</button>
             </form>
           </div>
         </div>

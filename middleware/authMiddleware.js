@@ -6,10 +6,10 @@ exports.auth = (req,res,next) => {
     }
     try {
         let token = null;
-        let cookiePosition = req.headers.cookie.indexOf('token=');
+        let cookiePosition = req.headers.cookie?.indexOf('token=');
         
         if(~cookiePosition){
-            token = req.headers.cookie.slice(cookiePosition+6);
+            token = req.headers.cookie?.slice(cookiePosition+6);
         }
         
         if(!token){

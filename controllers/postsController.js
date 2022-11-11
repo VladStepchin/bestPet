@@ -1,13 +1,9 @@
 const Post = require("../models/Post");
-const User = require("../models/User");
 const Utils = require("../utils/utils");
-
-const randomNumberTo30 = () => {
-  return Math.floor(Math.random() * 30);
-};
+const animals = require('random-animals-api');
 
 exports.getPostsByUser = async (req, res, next) => {
-  let posts = await Post.find({ userId: req.user.id });
+  let posts = await Post.find({ userId: req.user.id }).populate('likedBy');
   console.log(posts);
   res.render("index", {
     pageTitle: "Index",
@@ -17,7 +13,7 @@ exports.getPostsByUser = async (req, res, next) => {
 };
 
 exports.getAllPosts = async (req, res, next) => {
-  let posts = await Post.find();
+  let posts = await Post.find().populate('likedBy');
   res.render("index", {
     pageTitle: "Index",
     posts,
@@ -53,22 +49,39 @@ exports.editPost = async (req, res, next) => {
   res.redirect("/");
 };
 
+// split into two separate actions
 exports.incrementLike = async (req, res, next) => {
   try {
     let postId = req.params.postId;
+    let increment = null;
     if (!postId) {
       throw new Error("No such post");
     }
-    let postToUpdate = await Post.findById(postId).populate("userId");
-    console.log(postToUpdate);
+    let postToUpdate = await Post.findById(postId);
+
+    console.log('Wholesome post object', postToUpdate);
 
     if (!postToUpdate.likedBy.includes(req.user.id)) {
       postToUpdate.likes +=1;
       postToUpdate.likedBy.push(req.user.id)
-      postToUpdate.save();
+      increment = true;
     }
-    
-    return res.json({likes: postToUpdate.likes, likedBy: postToUpdate.userId.email}).end();
+    else {
+      postToUpdate.likes -=1;
+      postToUpdate.likedBy.pull(req.user.id)
+      increment = false
+    }
+    await postToUpdate.save();
+    let postToUpdateWithFields = await Post.findById(postId).populate('likedBy');
+
+    // need to move whole object instead of a part 
+    return res.json(
+      {
+        likes: postToUpdate.likes,
+        likedBy: postToUpdateWithFields.likedBy.map(user => user.email),
+        increment
+      })
+      .end();
 
   } catch (err) {
     console.log(err);
@@ -78,8 +91,6 @@ exports.incrementLike = async (req, res, next) => {
 };
 
 exports.getRandomImage = async (req, res, next) => {
-  let result = await Utils.getRandomImage(),
-    imageUrl = result.data[randomNumberTo30()].download_url;
-
-  res.json({ imageUrl: imageUrl });
+  const url = await animals.cat()
+  return res.json({ imageUrl: url });
 };

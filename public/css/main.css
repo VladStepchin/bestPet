@@ -16,6 +16,8 @@ body {
 
 a.brand-logo {
   padding-left: 2%;
+  font-family: 'Great Vibes', cursive;
+  font-size:40px;
 }
 
 .remove {
@@ -49,10 +51,6 @@ a.brand-logo {
 
 .random-image:hover {
   background-color: #25557c;
-}
-
-#already-registered {
-  padding-top: 10px;
 }
 
 .likes-amount {
