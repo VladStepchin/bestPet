@@ -25,5 +25,5 @@ const userSchema = new Schema({
         ref:'Role'
     }]
 })
-
-module.exports = mongoose.model('User', userSchema)
+exports.schema = userSchema;
+exports.model = mongoose.model('User', userSchema)

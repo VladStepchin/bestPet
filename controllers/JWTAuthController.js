@@ -1,5 +1,5 @@
 const Role = require("../models/Role.js");
-const User = require("../models/User.js");
+const User = require("../models/User.js").model;
 const bcrypt = require("bcrypt");
 // const { validationResult } = require("express-validator");
 const JWT = require("jsonwebtoken");

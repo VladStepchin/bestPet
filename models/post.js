@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const userSchema = require("./User").schema;
 const Schema = mongoose.Schema;
 
 const postSchema = new Schema({
@@ -16,11 +16,7 @@ const postSchema = new Schema({
     type: String,
     required: false,
   },
-  likedBy: [{ 
-    type: Schema.Types.ObjectId,
-    ref: "User",
-    required: false 
-  }],
+  likedBy: [userSchema],
   userId: {
     type: Schema.Types.ObjectId,
     ref: "User",

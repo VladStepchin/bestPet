@@ -61,14 +61,14 @@ exports.incrementLike = async (req, res, next) => {
 
     console.log('Wholesome post object', postToUpdate);
 
-    if (!postToUpdate.likedBy.includes(req.user.id)) {
+    if (!postToUpdate.likedBy.length || !postToUpdate.likedBy.map(user => user.email).includes(req.user.email)) {
       postToUpdate.likes +=1;
-      postToUpdate.likedBy.push(req.user.id)
+      postToUpdate.likedBy.push(req.user)
       increment = true;
     }
     else {
       postToUpdate.likes -=1;
-      postToUpdate.likedBy.pull(req.user.id)
+      postToUpdate.likedBy.pull(req.user)
       increment = false
     }
     await postToUpdate.save();
@@ -78,7 +78,7 @@ exports.incrementLike = async (req, res, next) => {
     return res.json(
       {
         likes: postToUpdate.likes,
-        likedBy: postToUpdateWithFields.likedBy.map(user => user.email),
+        likedBy: postToUpdateWithFields.likedBy.map(user=>user.email),
         increment
       })
       .end();
