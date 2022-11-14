@@ -26,15 +26,13 @@ document.addEventListener("DOMContentLoaded", async ()=> {
      fetch(`/post/${postId}/like`, {
         method: 'PATCH'
       }).then(res => res.json()).then((res) => {
-        if(typeof res === 'object'){
-          debugger;          
+        if(typeof res === 'object'){        
           const spanWithLikes = document.querySelectorAll(`span[data-id="${postId}"]`)[0];
           const button = document.querySelectorAll(`button[data-id="${postId}"]`)[0];
           const likeIcon = document.querySelectorAll(`i.like[data-id="${postId}"]`)[0];
 
           spanWithLikes.innerText = res.likes;
           button.dataset.tooltip = res.likedBy
-          debugger;
           likeIcon.innerText = res.increment ? "favorite" : "favorite_border" 
         }
       });      
