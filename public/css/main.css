@@ -63,4 +63,13 @@ a.brand-logo {
 .nav-bar-poster{
   border-radius: 50%;
   width: 65px;
+  height: 65px;
+}
+
+.poster-upload{
+  background:#4a83b2;
+}
+
+.poster-upload:hover{
+  background:#2e5d83;
 }

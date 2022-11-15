@@ -17,7 +17,6 @@ exports.auth = (req,res,next) => {
         }
         const decodedData = JWT.verify(token, process.env.SECRET)
         req.user = decodedData;
-        req.user['name'] = req.user['email']; // fix
 
         console.log(req.user);
         return next();
