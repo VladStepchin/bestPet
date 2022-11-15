@@ -59,3 +59,8 @@ a.brand-logo {
   left: 5px;
   font-size: 17px;
 }
+
+.nav-bar-poster{
+  border-radius: 50%;
+  width: 65px;
+}

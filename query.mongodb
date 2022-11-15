@@ -5,5 +5,9 @@ use("BestPet")
 // db.posts.updateOne({likes:0}, {$set:{likedBy:[]}})
 // db.posts.updateOne({likes:0},{$set:{likedBy:[]}})
 
-db.posts.deleteMany({likes:{$gte:0}})
+// db.posts.updateMany({},{$rename:{"userId":"creatorId"}})
+
+// db.users.updateMany({},{$rename:{"imageUrl":"poster"}})
+
+db.users.find()
 

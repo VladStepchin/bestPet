@@ -3,7 +3,7 @@ const Utils = require("../utils/utils");
 const animals = require('random-animals-api');
 
 exports.getPostsByUser = async (req, res, next) => {
-  let posts = await Post.find({ userId: req.user.id }).populate('likedBy');
+  let posts = await Post.find({ creatorId: req.user.id }).populate('likedBy');
   console.log(posts);
   res.render("index", {
     pageTitle: "Index",
@@ -13,7 +13,7 @@ exports.getPostsByUser = async (req, res, next) => {
 };
 
 exports.getAllPosts = async (req, res, next) => {
-  let posts = await Post.find().populate('likedBy');
+  let posts =   await Post.find().populate('likedBy');
   res.render("index", {
     pageTitle: "Index",
     posts,
@@ -22,11 +22,11 @@ exports.getAllPosts = async (req, res, next) => {
 };
 
 exports.postPost = async (req, res, next) => {
-  debugger;
+  console.log(req);
   let post = new Post({
     content: req.body.content,
     imageUrl: req.body.imageUrl,
-    userId: req.user.id,
+    creatorId: req.user.id,
     likedBy: [],
   });
   await post
@@ -49,17 +49,19 @@ exports.editPost = async (req, res, next) => {
   res.redirect("/");
 };
 
-// split into two separate actions
+// split into two separate actions?
+
 exports.incrementLike = async (req, res, next) => {
   try {
     let postId = req.params.postId;
     let increment = null;
+
     if (!postId) {
       throw new Error("No such post");
     }
     let postToUpdate = await Post.findById(postId);
 
-    console.log('Wholesome post object', postToUpdate);
+    console.log('Post', postToUpdate);
 
     if (!postToUpdate.likedBy.includes(req.user.id)) {
       postToUpdate.likes +=1;
@@ -72,13 +74,14 @@ exports.incrementLike = async (req, res, next) => {
       increment = false
     }
     await postToUpdate.save();
-    let postToUpdateWithFields = await Post.findById(postId).populate('likedBy');
-
+    
+    let postWithPopulatedFields = await postToUpdate.populate('likedBy');
+    
     // need to move whole object instead of a part 
     return res.json(
       {
-        likes: postToUpdate.likes,
-        likedBy: postToUpdateWithFields.likedBy.map(user=>user.email),
+        likes: postWithPopulatedFields.likes,
+        likedBy: postWithPopulatedFields.likedBy.map(user => user.email),
         increment
       })
       .end();

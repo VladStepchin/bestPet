@@ -4,13 +4,21 @@ const AuthJWTController = require("../controllers/JWTAuthController");
 const { check } = require("express-validator");
 const authMiddleware = require("../middleware/AuthMiddleware");
 
-require("../controllers/GoogleAuthController");
+const multer = require('multer');
 
-//research
-const isLoggedIn = (req, res, next) => {
-  if (req.user) next();
-  else res.sendStatus(401);
-};
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads');
+  },
+  filename: (req, file, cb) => {
+    
+    cb(null, Date.now() + file.originalname)
+  }
+})
+
+const upload = multer({storage:storage});
+
+require("../controllers/GoogleAuthController");
 
 router.get("/failed", (req, res) => {
   res.json({
@@ -18,28 +26,15 @@ router.get("/failed", (req, res) => {
   });
 });
 
-router.get("/good", isLoggedIn, (req, res) => {
-  res.render("failed", {
-    user: req.user?.displayName,
-  });
-});
 
-router.get("/login", passport.authenticate("google", { scope: ["profile", "email"] })
-);
+router.get("/login", passport.authenticate("google", { scope: ["profile", "email"] }));
 
-router.get("/login/callback",passport.authenticate("google", { failureRedirect: "/failed" }),(req, res) => {
-    res.redirect("/");
-  }
-);
+router.get("/login/callback",passport.authenticate("google", { failureRedirect: "/failed" }),(req, res) => {res.redirect("/"); });
 
-
-
-// -----------------------------------------------------
-// JWT AUTHORIZATION
 
 router.get("/logout", AuthJWTController.logOut);
 router.post("/loginJWT", AuthJWTController.loginJWT);
-router.post("/registrationJWT", AuthJWTController.registrationJWT);
+router.post("/registrationJWT", upload.single('poster'), AuthJWTController.registrationJWT);
 router.get("/users", authMiddleware.auth, AuthJWTController.getUsers);
 
 

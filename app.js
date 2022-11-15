@@ -22,6 +22,7 @@ app
 .use(passport.initialize())
 .use(passport.session())
 .use(express.static(path.join(__dirname, 'public')))
+.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 .use(cors())
 .use(postsRouter)
 .use(cookieParser())

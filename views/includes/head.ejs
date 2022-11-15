@@ -30,7 +30,7 @@
             <li><a class="waves-effect waves-light btn modal-trigger" href="#register" id="register-button"><i class="material-icons left">directions_run</i>Sign in</a></li>
             <li id="already-registered"><a class="modal-trigger" href="#loginJWT">Already register?</a></li>
             <% } else {%>
-           
+            <li><img src ="<%=user.poster%>" class="nav-bar-poster"/></li>
             <li><a href="#">Greeting, <%= user.email %></a></li>
             <li><a class="waves-effect waves-light btn modal-trigger pulse" href="#modal1"><i class="material-icons left">edit</i>Tweet</a></button></li>
             <li><a href="/logout"><i class="material-icons left">airline_seat_individual_suite</i>Logout</a></li>
@@ -45,11 +45,13 @@
     <div class="modal-content">
           <div class="input-field col s12">
             <h4 class="center">Registration</h4>
-            <form action="/registrationJWT" method="POST">
+            <form action="/registrationJWT" method="POST" enctype="multipart/form-data">
               <label for="email">What is your email</label>
               <input type="email" name="email" id="email-registration" class="autocomplete content" autocomplete>
               <label for="password">What is your password</label>
-                <input type="password" class="password-registration" name="password" class="autocomplete password" autocomplete>
+              <input type="password" class="password-registration" name="password" class="autocomplete password" autocomplete>
+              <label for="poster">Paste the URL to the image</label>
+              <input type="file" class="create-post" name="poster" id="poster" class="autocomplete poster">
                 <button class="btn waves-effect wavwes-light modal-close" type="submit" name="action">Register</button>
             </form>
           </div>

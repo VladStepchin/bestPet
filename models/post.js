@@ -22,7 +22,7 @@ const postSchema = new Schema({
       ref: "User"
     }
   ],
-  userId: {
+  creatorId: {
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true,

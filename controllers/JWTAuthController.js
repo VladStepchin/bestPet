@@ -7,11 +7,12 @@ const session = require('express-session');
 
 require("dotenv").config();
 
-const generateAccessToken = (id, roles, email) => {
+const generateAccessToken = (id, roles, email, poster) => {
   const payload = {
     id,
     roles,
     email,
+    poster
   };
   return JWT.sign(payload, process.env.SECRET, { expiresIn: "24h" });
 };
@@ -19,7 +20,9 @@ const generateAccessToken = (id, roles, email) => {
 class AuthJWTController {
   static async registrationJWT(req, res) {
     try {
+      console.log(req.file);
       const { email, password } = req.body;
+      const userPoster = req.file?.path;
       const candidate = await User.findOne({ email });
 
       if (candidate) {
@@ -32,7 +35,7 @@ class AuthJWTController {
       const user = new User({
         email,
         password: hashedPassword,
-        imageUrl: '',
+        poster: userPoster || '',
         roles: [userRole.value],
       });
       await user.save();
@@ -44,6 +47,7 @@ class AuthJWTController {
   }
   static async loginJWT(req, res) {
     try {
+      
       const { email, password } = req.body;
       const user = await User.findOne({ email });
 
@@ -55,7 +59,7 @@ class AuthJWTController {
       if (!validPassword) {
         return res.status(400).json({ message: "The password is incorrect" });
       }
-      const token = await generateAccessToken(user._id, user.roles, user.email);
+      const token = await generateAccessToken(user._id, user.roles, user.email, user.poster);
       
       console.log("TOKEN", token);
       console.log("You have been successfully signed in");
@@ -87,5 +91,5 @@ class AuthJWTController {
   }
 }
 
+
 module.exports = AuthJWTController;
-``

@@ -15,22 +15,17 @@
               <div class="card-image">
                 <img src="<%= post.imageUrl %>">
               </div>
-              <% if(user) { %>
               <div class="card-action">
+              <% if(user && post.creatorId.toString() === user.id) { %>                
                 <a class="waves-effect btn edit modal-trigger" href="#edit-item<%=post.id%>">Edit</a>
-                <a class="waves-effect modal-trigger btn remove" href="#remove-item<%=post.id%>">Remove</a>                
-                <% if(post.likedBy.includes(user.email)){ %>
+                <a class="waves-effect modal-trigger btn remove" href="#remove-item<%=post.id%>">Remove</a>
+              <%}%>                
+              <% if(user && post.likedBy.map(user => user.email).includes(user.email)){ %>
                     <button class="waves-effect btn edit modal-trigger like-post tooltipped" data-position="right" data-tooltip="<%=post.likedBy.map(user=>user.email)%>" data-id="<%=post.id%>"><i class="material-icons like" data-id="<%=post.id%>">favorite</i><span class="likes-amount" data-id="<%=post.id%>"><%=post.likes%></span></button>
                 <% } else {%>
                     <button class="waves-effect btn edit modal-trigger like-post tooltipped" data-position="right" data-tooltip="<%=post.likedBy.map(user=>user.email)%>" data-id="<%=post.id%>"><i class="material-icons like" data-id="<%=post.id%>">favorite_border</i><span class="likes-amount" data-id="<%=post.id%>"><%=post.likes%></span></button>
-                <%}%>
-                
+                <%}%>                
               </div>
-              <%} else {%>
-                <div class="card-action">
-                    <button class="waves-effect btn edit modal-trigger like-post tooltipped" data-position="right" data-tooltip="<%=post.likedBy.map(user=>user.email)%>" data-id="<%=post.id%>"><i class="material-icons like" data-id="<%=post.id%>">favorite_border</i><span class="likes-amount" data-id="<%=post.id%>"><%=post.likes%></span></button>
-                </div>
-                <%}%>
             </div>
           </div>
         </div>

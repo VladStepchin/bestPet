@@ -28,7 +28,7 @@ passport.use(
             const user = new User({
             googleId: profile.id,
             email: profile.emails[0].value,
-            imageUrl: profile.photos[0].value,
+            poster: profile.photos[0].value,
             roles: ["USER"]
             });
             await user

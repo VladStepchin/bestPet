@@ -16,7 +16,7 @@ const userSchema = new Schema({
         type: String,
         required: false,
     },
-    imageUrl: {
+    poster: {
         type:String,
         required: false
     },
