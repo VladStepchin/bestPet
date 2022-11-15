@@ -7,9 +7,9 @@ router.post('/post', authMiddleware.auth, postsController.postPost)
 
 router.post('/post/delete/:postId', authMiddleware.auth, postsController.deletePost)
 
-router.post('/post/edit/:postId',authMiddleware.auth, postsController.editPost)
+router.put('/post/edit/:postId',authMiddleware.auth, postsController.editPost)
 
-router.get('/', authMiddleware.showNameMiddleware, postsController.getAllPosts)
+router.get('/', postsController.getAllPosts)
 
 router.get('/getPostsByUser', authMiddleware.auth, postsController.getPostsByUser)
 

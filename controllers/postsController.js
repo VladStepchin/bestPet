@@ -13,12 +13,13 @@ exports.getPostsByUser = async (req, res, next) => {
 };
 
 exports.getAllPosts = async (req, res, next) => {
-  let posts =   await Post.find().populate('likedBy');
-  res.render("index", {
-    pageTitle: "Index",
-    posts,
-    user: req.user,
-  });
+  let posts = await Post.find().populate('likedBy');
+  return res.json(posts);
+  // res.render("index", {
+  //   pageTitle: "Index",
+  //   posts,
+  //   user: req.user,
+  // });
 };
 
 exports.postPost = async (req, res, next) => {
