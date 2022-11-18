@@ -1,9 +1,10 @@
 const Role = require("../models/Role.js");
-const User = require("../models/User.js").model;
+const User = require("../models/User.js");
 const bcrypt = require("bcrypt");
 // const { validationResult } = require("express-validator");
 const JWT = require("jsonwebtoken");
-const session = require('express-session');
+const session = require("express-session");
+const UserModule = require("../modules/UserModule");
 
 require("dotenv").config();
 
@@ -12,7 +13,7 @@ const generateAccessToken = (id, roles, email, poster) => {
     id,
     roles,
     email,
-    poster
+    poster,
   };
   return JWT.sign(payload, process.env.SECRET, { expiresIn: "24h" });
 };
@@ -32,13 +33,13 @@ class AuthJWTController {
       }
       const hashedPassword = bcrypt.hashSync(password, 5);
       const userRole = await Role.findOne({ value: "ADMIN" });
-      const user = new User({
+      console.log('user role', userRole);
+      const user = await UserModule.create({
         email,
         password: hashedPassword,
-        poster: userPoster || '',
+        poster: userPoster || "",
         roles: [userRole.value],
       });
-      await user.save();
       return res.json({ message: "User has been successfully create" });
     } catch (err) {
       console.log(err);
@@ -47,7 +48,6 @@ class AuthJWTController {
   }
   static async loginJWT(req, res) {
     try {
-      
       const { email, password } = req.body;
       const user = await User.findOne({ email });
 
@@ -59,14 +59,18 @@ class AuthJWTController {
       if (!validPassword) {
         return res.status(400).json({ message: "The password is incorrect" });
       }
-      const token = await generateAccessToken(user._id, user.roles, user.email, user.poster);
-      
+      const token = await generateAccessToken(
+        user._id,
+        user.roles,
+        user.email,
+        user.poster
+      );
+
       console.log("TOKEN", token);
       console.log("You have been successfully signed in");
       res.cookie("token", token, { httpOnly: true });
 
-      return res.redirect("/getPostsByUser")
-      
+      return res.redirect("/getPostsByUser");
     } catch (err) {
       console.log(err);
       res.status(400).json({ message: "Login erroґ`r" });
@@ -90,6 +94,5 @@ class AuthJWTController {
     }
   }
 }
-
 
 module.exports = AuthJWTController;

@@ -45,10 +45,10 @@
 
         <div id="edit-item<%=post.id%>" class="modal">
           <div class="modal-content">
-            <form action="/post/edit/<%= post.id%>" method="PUT">
-              <label for="content">What's up</label>
+            <form action="/post/edit/<%= post.id%>" method="POST">
+              <label for="content">Content</label>
               <input type="text" name="content" class="autocomplete content" value="<%= post.content%>">
-              <label for="imageUrl">What's your mood</label>
+              <label for="imageUrl">ImageURL</label>
               <input type="text" name="imageUrl" class="autocomplete image" value="<%= post.imageUrl%>">
               <div class="modal-footer">
                 <button class="btn waves-effect waves-light modal-close edit-submit" type="submit" name="action">Edit

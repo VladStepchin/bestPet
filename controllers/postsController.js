@@ -1,10 +1,11 @@
-const Post = require("../models/Post");
-const Utils = require("../utils/utils");
-const animals = require('random-animals-api');
+// change to class
+
+const animals = require("random-animals-api");
+const PostModule = require("../modules/PostModule");
 
 exports.getPostsByUser = async (req, res, next) => {
-  let posts = await Post.find({ creatorId: req.user.id }).populate('likedBy');
-  console.log(posts);
+  let posts = await PostModule.list({ creatorId: req.user.id }, "likedBy").catch(next);
+
   res.render("index", {
     pageTitle: "Index",
     posts,
@@ -13,88 +14,63 @@ exports.getPostsByUser = async (req, res, next) => {
 };
 
 exports.getAllPosts = async (req, res, next) => {
-  let posts = await Post.find().populate('likedBy');
-  return res.json(posts);
-  // res.render("index", {
-  //   pageTitle: "Index",
-  //   posts,
-  //   user: req.user,
-  // });
+  console.log(req.user);
+  let posts = await PostModule.list({}, "likedBy").catch(next);
+
+  res.render("index", {
+    pageTitle: "Index",
+    posts,
+    user: req.user,
+  });
 };
 
-exports.postPost = async (req, res, next) => {
-  console.log(req);
-  let post = new Post({
-    content: req.body.content,
-    imageUrl: req.body.imageUrl,
+exports.postPost = async (req, res, next) => {  
+  if (req.body && !req.body.name) {
+    return next(new HttpError('Invalid body'));
+  }
+  const newPost = await PostModule.create({
+    ...req.body,
     creatorId: req.user.id,
     likedBy: [],
-  });
-  await post
-    .save()
-    .then(() => res.redirect("/"))
-    .catch((err) => console.log(err));
+  }).catch(next);
+
+  console.log("The post has been create", newPost);
+
+  res.redirect("/getPostsByUser");
 };
 
 exports.deletePost = async (req, res, next) => {
-  await Post.findByIdAndRemove(req.params.postId).then(res.redirect("/"));
+  await PostModule.delete(req.params.postId).catch(next);
+  res.redirect("/getPostsByUser");
 };
 
 exports.editPost = async (req, res, next) => {
-  let postId = req.params.postId;
-  let updatedPost = {
-    content: req.body.content,
-    imageUrl: req.body.imageUrl,
-  };
-  await Post.findByIdAndUpdate(postId, updatedPost).then();
-  res.redirect("/");
+  if (req.body && !req.body.name) {
+    return next(new HttpError('Invalid body'));
+  }
+  await PostModule.update({ ...req.body, id: req.params.postId }).catch(next);
+  res.redirect("/"); // check req.header.referrer
 };
 
-// split into two separate actions?
+// split into two separate actions
 
 exports.incrementLike = async (req, res, next) => {
-  try {
-    let postId = req.params.postId;
-    let increment = null;
-
-    if (!postId) {
-      throw new Error("No such post");
-    }
-    let postToUpdate = await Post.findById(postId);
-
-    console.log('Post', postToUpdate);
-
-    if (!postToUpdate.likedBy.includes(req.user.id)) {
-      postToUpdate.likes +=1;
-      postToUpdate.likedBy.push(req.user.id)
-      increment = true;
-    }
-    else {
-      postToUpdate.likes -=1;
-      postToUpdate.likedBy.pull(req.user.id)
-      increment = false
-    }
-    await postToUpdate.save();
-    
-    let postWithPopulatedFields = await postToUpdate.populate('likedBy');
-    
-    // need to move whole object instead of a part 
-    return res.json(
-      {
-        likes: postWithPopulatedFields.likes,
-        likedBy: postWithPopulatedFields.likedBy.map(user => user.email),
-        increment
-      })
-      .end();
-
-  } catch (err) {
-    console.log(err);
+  if (!req.params.postId) {
+    return next(new HttpError('Invalid body'));
   }
 
-  return res.sendStatus(200);
+  let updatedPost = await PostModule.updateLikes(
+    req.params.postId,
+    req.user.id
+  );
+
+  return res.json({
+    likes: updatedPost.likes,
+    likedBy: updatedPost.likedBy.map((_) => _.email),
+  });
 };
 
 exports.getRandomImage = async (req, res, next) => {
-  const url = await animals.cat()
+  const url = await animals.cat();
   return res.json({ imageUrl: url });
 };

@@ -16,8 +16,9 @@ export default {
   },
   methods: {
     loadCount: async function () {
-      let result = await axios.get("http://127.0.0.1:3000/");
-      this.count = result.data[0]._id;
+      let result = await axios.get("http://127.0.0.1:3000");
+      console.log(result.data.posts);
+      this.count = result.data.posts
     },
   },
 };
