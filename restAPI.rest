@@ -7,6 +7,12 @@
 
 ###$
 
-get http://localhost:3000/
+get http://localhost:3000/post/random-image  HTTP/1.1
+Content-Type: application/json
+
+{
+    "name":"Vlad",
+    "age":23
+}
 
 

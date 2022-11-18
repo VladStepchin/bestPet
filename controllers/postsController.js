@@ -2,6 +2,7 @@
 
 const animals = require("random-animals-api");
 const PostModule = require("../modules/PostModule");
+const { HttpError } = require("../modules/utils");
 
 exports.getPostsByUser = async (req, res, next) => {
   let posts = await PostModule.list({ creatorId: req.user.id }, "likedBy").catch(next);
@@ -45,7 +46,7 @@ exports.deletePost = async (req, res, next) => {
 };
 
 exports.editPost = async (req, res, next) => {
-  if (req.body && !req.body.name) {
+  if (req.body && !req.body.content) {
     return next(new HttpError('Invalid body'));
   }
   await PostModule.update({ ...req.body, id: req.params.postId }).catch(next);
@@ -56,7 +57,7 @@ exports.editPost = async (req, res, next) => {
 
 exports.incrementLike = async (req, res, next) => {
   if (!req.params.postId) {
-    return next(new HttpError('Invalid body'));
+    return next(new HttpError('Invalid params'));
   }
 
   let updatedPost = await PostModule.updateLikes(

@@ -20,21 +20,22 @@ document.addEventListener("DOMContentLoaded", async ()=> {
   
   likeButtons.forEach(button => {
     button.addEventListener("click", async (e) => {
-  
       const postId = button.dataset.id;
   
      fetch(`/post/${postId}/like`, {
         method: 'PATCH'
       }).then(res => res.json()).then(res => {
         debugger
-        if(typeof res === 'object'){     
+        if(typeof res === 'object') {     
           const spanWithLikes = document.querySelectorAll(`span[data-id="${postId}"]`)[0];
           const button = document.querySelectorAll(`button[data-id="${postId}"]`)[0];
           const likeIcon = document.querySelectorAll(`i.like[data-id="${postId}"]`)[0];
-          
+          let previousLikes = Number(spanWithLikes.innerHTML)
+
           spanWithLikes.innerText = res.likes;
-          button.dataset.tooltip = res.likedBy
-          likeIcon.innerText = Number(spanWithLikes.innerHTML) > res.likes ? "favorite" : "favorite_border" 
+          button.dataset.tooltip = res.likedBy;
+          
+          likeIcon.innerHTML = previousLikes < Number(res.likes) ? "favorite" : "favorite_border" 
         }
       });      
     })

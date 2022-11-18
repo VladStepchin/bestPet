@@ -30,17 +30,16 @@ config.init('http://localhost:3010')
   .use(cors())
   .use(postsRouter)
   .use(authRouter)
+  .use(errorHandler)
   .set('view engine', 'ejs')
   .set('views', 'views')
   .listen(config.getData().app.port, () => console.log("Server has been started"));
 })
 
-
-// //refactor (video 2)
-// mongoDb.connect().then(()=> app.listen(3000, () => console.log('Server has been started')))
-// .catch(err => {
-//   console.log(err);
-// });
+// if 4 parameters this means function is errorHandler
+function errorHandler(err, req, res, next) {
+  res.status(err.status).json({ message: err.message });
+}
 
  
 

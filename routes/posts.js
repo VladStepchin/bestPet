@@ -23,7 +23,7 @@ router.get('/getPostsByUser',
             postsController.getPostsByUser)
 
 router.post('/post',
-            authMiddleware.auth,
+            
             postsController.postPost)
 
 router.get('/',
