@@ -1,4 +1,5 @@
 // ask if async useful?
+// refacctor to PostService
 const Post = require("../models/Post");
 
 class PostModule {
@@ -20,20 +21,16 @@ class PostModule {
   }
 // change to automatically count likes
   static async updateLikes(postId, userId) {
-    let increment = null;
-
     let postToUpdate = await Post.findById(postId);
 
     // refactor to automatically compute the likes
     if (!postToUpdate.likedBy.includes(userId)) {
-      postToUpdate.likes += 1;
       postToUpdate.likedBy.push(userId);
-      increment = true;
     } else {
-      postToUpdate.likes -= 1;
       postToUpdate.likedBy.pull(userId);
-      increment = false;
     }
+
+    postToUpdate.likes = postToUpdate.likedBy.length;
 
     await postToUpdate.save();
 

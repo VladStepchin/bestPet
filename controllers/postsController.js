@@ -66,7 +66,7 @@ exports.incrementLike = async (req, res, next) => {
   );
 
   return res.json({
-    likes: updatedPost.likes,
+    likes: updatedPost.likedBy.length,
     likedBy: updatedPost.likedBy.map((_) => _.email),
   });
 };

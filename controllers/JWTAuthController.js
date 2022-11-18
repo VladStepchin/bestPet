@@ -4,7 +4,11 @@ const bcrypt = require("bcrypt");
 // const { validationResult } = require("express-validator");
 const JWT = require("jsonwebtoken");
 const session = require("express-session");
-const UserModule = require("../modules/UserModule");
+
+const UserService = require("../modules/UserService");;
+const Repository = require("../core/Repository");
+
+const userService = new UserService(new Repository(User))
 
 require("dotenv").config();
 
@@ -24,7 +28,7 @@ class AuthJWTController {
       console.log(req.file);
       const { email, password } = req.body;
       const userPoster = req.file?.path;
-      const candidate = await User.findOne({ email });
+      const candidate = await userService.findOne({ email });
 
       if (candidate) {
         return res
@@ -34,7 +38,7 @@ class AuthJWTController {
       const hashedPassword = bcrypt.hashSync(password, 5);
       const userRole = await Role.findOne({ value: "ADMIN" });
       console.log('user role', userRole);
-      const user = await UserModule.create({
+      const user = await userService.create({
         email,
         password: hashedPassword,
         poster: userPoster || "",
@@ -49,7 +53,7 @@ class AuthJWTController {
   static async loginJWT(req, res) {
     try {
       const { email, password } = req.body;
-      const user = await User.findOne({ email });
+      const user = await userService.findOne({ email });
 
       if (!user) {
         return res.status(400).json({ message: "The user has not been found" });
@@ -87,7 +91,7 @@ class AuthJWTController {
 
   static async getUsers(req, res) {
     try {
-      let users = await User.find();
+      let users = await userService.findMany();
       res.json(users);
     } catch (err) {
       console.log(err);

@@ -34,7 +34,6 @@ document.addEventListener("DOMContentLoaded", async ()=> {
 
           spanWithLikes.innerText = res.likes;
           button.dataset.tooltip = res.likedBy;
-          
           likeIcon.innerHTML = previousLikes < Number(res.likes) ? "favorite" : "favorite_border" 
         }
       });      
