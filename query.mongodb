@@ -9,5 +9,4 @@ use("BestPet")
 
 // db.users.updateMany({},{$rename:{"imageUrl":"poster"}})
 
-db.users.deleteMany({"email":{$in:["rttyy@gmail.com", "qwert@gmail.com", "yqwer@gmail.com",  "qqqqqqq@gmail.com"]}})
-db.users.find()
+// db.users.deleteMany({"email":{$in:["rttyy@gmail.com", "qwert@gmail.com", "yqwer@gmail.com",  "qqqqqqq@gmail.com"]}})

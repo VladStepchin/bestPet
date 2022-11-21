@@ -1,32 +1,53 @@
-const router = require('express').Router();
-const postsController = require('../controllers/PostsController')
-const authMiddleware = require("../middleware/authMiddleware")
+const router = require("express").Router();
+const authMiddleware = require("../middleware/authMiddleware");
+const Post = require("../models/Post");
+const PostsController = require("../controllers/PostsController");
+const PostService = require("../modules/PostService");
+const Repository = require("../core/Repository");
 
-router.post('/post/delete/:postId',
-            authMiddleware.auth,
-            postsController.deletePost)
+const postService = new PostService(new Repository(Post));
+const postController = new PostsController(postService);
 
-router.post('/post/edit/:postId',
-            authMiddleware.auth,
-            postsController.editPost)
+router.post(
+  "/post/delete/:postId",
+  authMiddleware.auth,
+  postController.deletePost.bind(postController)
+);
 
-router.get('/post/random-image',
-            authMiddleware.auth,
-            postsController.getRandomImage)
+router.post(
+  "/post/edit/:postId",
+  authMiddleware.auth,
+  postController.editPost.bind(postController)
+);
 
-router.patch('/post/:postId/like',
-            authMiddleware.auth,
-            postsController.incrementLike)
+router.get(
+  "/post/random-image",
+  authMiddleware.auth,
+  postController.getRandomImage.bind(postController)
+);
 
-router.get('/getPostsByUser',
-            authMiddleware.auth,
-            postsController.getPostsByUser)
+router.patch(
+  "/post/:postId/like",
+  authMiddleware.auth,
+  postController.incrementLike.bind(postController)
+);
 
-router.post('/post',
-            authMiddleware.auth,
-            postsController.postPost)
+router.get(
+  "/getPostsByUser",
+  authMiddleware.auth,
+  postController.getPostsByUser.bind(postController)
+);
 
-router.get('/',authMiddleware.showNameMiddleware,
-            postsController.getAllPosts)
+router.post(
+  "/post",
+  authMiddleware.auth,
+  postController.postPost.bind(postController)
+);
 
-module.exports = router
+router.get(
+  "/",
+  authMiddleware.showNameMiddleware,
+  postController.getAllPosts.bind(postController)
+);
+
+module.exports = router;

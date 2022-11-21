@@ -1,4 +1,4 @@
-// it has been implemented via composition unlike it is done in C# via inheritance from
+// it has been implemented via composition unlike it is done in C# via inheritance
 
 class UserService {
   constructor(repository) {
@@ -10,13 +10,11 @@ class UserService {
   }
 
   findOne(criteria) {
-    return this.repository.findOne(criteria)
+    return this.repository.findOne(criteria);
   }
 
-  findMany(criteria) {
-    return this.repository.find(criteria)
+  list(criteria) {
+    return this.repository.list(criteria);
   }
-
 }
-
 module.exports = UserService;
