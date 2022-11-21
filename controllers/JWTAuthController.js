@@ -25,7 +25,6 @@ const generateAccessToken = (id, roles, email, poster) => {
 class AuthJWTController {
   static async registrationJWT(req, res) {
     try {
-      console.log(req.file);
       const { email, password } = req.body;
       const userPoster = req.file?.path;
       const candidate = await userService.findOne({ email });
@@ -44,7 +43,7 @@ class AuthJWTController {
         poster: userPoster || "",
         roles: [userRole.value],
       });
-      return res.json({ message: "User has been successfully create" });
+      return res.json({ message: "User has been successfully created" });
     } catch (err) {
       console.log(err);
       res.status(400).json({ message: "Registration error" });
@@ -82,8 +81,8 @@ class AuthJWTController {
   }
 
   static async logOut(req, res) {
-    res.clearCookie("token");
-    req.logout((err) => {
+    res.clearCookie("token"); // logout if JWT token
+    req.logout((err) => { // logout if Google Auth
       if (err) return err;
     });
     return res.redirect("/");

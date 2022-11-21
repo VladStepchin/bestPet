@@ -6,7 +6,6 @@ class UserService {
   }
 
   create(params) {
-    console.log("Result", params);
     return this.repository.create(params);
   }
 

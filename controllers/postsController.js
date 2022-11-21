@@ -1,11 +1,16 @@
 // change to class
 
 const animals = require("random-animals-api");
-const PostModule = require("../modules/PostModule");
+const axios = require("axios").default;
+const Post = require("../models/Post")
+const PostService = require("../modules/PostService");
+const Repository = require("../core/Repository")
 const { HttpError } = require("../modules/utils");
 
+const postService = new PostService(new Repository(Post))
+
 exports.getPostsByUser = async (req, res, next) => {
-  let posts = await PostModule.list({ creatorId: req.user.id }, "likedBy").catch(next);
+  let posts = await postService.list({ creatorId: req.user.id }, "likedBy").catch(next);
 
   res.render("index", {
     pageTitle: "Index",
@@ -15,8 +20,7 @@ exports.getPostsByUser = async (req, res, next) => {
 };
 
 exports.getAllPosts = async (req, res, next) => {
-  console.log(req.user);
-  let posts = await PostModule.list({}, "likedBy").catch(next);
+  let posts = await postService.list({}, "likedBy").catch(next);
 
   res.render("index", {
     pageTitle: "Index",
@@ -26,10 +30,10 @@ exports.getAllPosts = async (req, res, next) => {
 };
 
 exports.postPost = async (req, res, next) => {  
-  if (req.body && !req.body.name) {
+  if (req.body && !req.body.content) {
     return next(new HttpError('Invalid body'));
   }
-  const newPost = await PostModule.create({
+  const newPost = await postService.create({
     ...req.body,
     creatorId: req.user.id,
     likedBy: [],
@@ -41,7 +45,7 @@ exports.postPost = async (req, res, next) => {
 };
 
 exports.deletePost = async (req, res, next) => {
-  await PostModule.delete(req.params.postId).catch(next);
+  await postService.delete(req.params.postId).catch(next);
   res.redirect("/getPostsByUser");
 };
 
@@ -49,18 +53,17 @@ exports.editPost = async (req, res, next) => {
   if (req.body && !req.body.content) {
     return next(new HttpError('Invalid body'));
   }
-  await PostModule.update({ ...req.body, id: req.params.postId }).catch(next);
-  res.redirect("/"); // check req.header.referrer
+  await postService.update(req.params.postId, req.body).catch(next);
+  res.redirect("/"); // change to req.header.referrer
 };
 
-// split into two separate actions
 
 exports.incrementLike = async (req, res, next) => {
   if (!req.params.postId) {
     return next(new HttpError('Invalid params'));
   }
 
-  let updatedPost = await PostModule.updateLikes(
+  let updatedPost = await postService.updateLikes(
     req.params.postId,
     req.user.id
   );
@@ -72,6 +75,5 @@ exports.incrementLike = async (req, res, next) => {
 };
 
 exports.getRandomImage = async (req, res, next) => {
-  const url = await animals.cat();
-  return res.json({ imageUrl: url });
+  return res.json({ imageUrl: "https://purr.objects-us-east-1.dream.io/i/AS1or.jpg" });
 };

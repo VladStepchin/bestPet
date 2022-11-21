@@ -3,17 +3,25 @@ class Repository {
     this.model = model;
   }
 
+  async list(criteria, populate = '') {
+    return await this.model.find(criteria).populate(populate);
+  }
+
   async findOne(criteria) {
-    return await this.model.findOne(criteria).exec();
+    return await this.model.findOne(criteria);
   }
 
-  async findMany(criteria) {
-    return await this.model.find(criteria).exec();
+ async create(params) {
+    return await new this.model(params).save();
   }
 
-  create(params) {
-    return new this.model(params).save();
+  async delete(id) {
+    return await this.model.findByIdAndDelete(id);
   }
+
+  async update(id, newItem) {
+    return await this.model.findByIdAndUpdate(id, newItem);
+  } 
 }
 
 module.exports = Repository;
