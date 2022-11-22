@@ -30,7 +30,6 @@ config.init('http://localhost:3010')
   .use(cors())
   .use(postsRouter)
   .use(authRouter)
-  .use(errorHandler)
   .set('view engine', 'ejs')
   .set('views', 'views')
   .listen(config.getData().app.port, () => console.log("Server has been started"));

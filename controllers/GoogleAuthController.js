@@ -5,17 +5,7 @@ const UserService = require("../modules/UserService");
 const Repository = require("../core/Repository");
 
 const userService = new UserService(new Repository(User));
-
 require("dotenv").config();
-
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-
-passport.deserializeUser(async (user, done) => {
-  let userFromDb = await userService.findOne({ googleId: user.googleId });
-  done(null, userFromDb);
-});
 
 passport.use(
   new GoogleStrategy(
@@ -47,5 +37,28 @@ passport.use(
   )
 );
 
+class GoogleAuthController {
+  static serializeUser = passport.serializeUser((user, done) => {
+    done(null, user);
+  });
 
-// module.exports
+  static deserializeUser = passport.deserializeUser(async (user, done) => {
+    let userFromDb = await userService.findOne({ googleId: user.googleId });
+    done(null, userFromDb);
+  });
+
+  static login = passport.authenticate("google", {
+    scope: ["profile", "email"],
+  });
+  static authenticate = passport.authenticate("google", {
+    failureRedirect: "/failed",
+  });
+
+  static failedToLogin = () => new Error("Login via Google failed");
+
+  static redirectToStart (req, res) {
+    res.redirect("/");
+  }
+}
+
+module.exports = GoogleAuthController;

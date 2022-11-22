@@ -29,4 +29,8 @@ const postSchema = new Schema({
   },
 });
 
+postSchema.methods.updateLikes = function(){
+  this.likes = this.likedBy.length;
+}
+
 module.exports = mongoose.model("Post", postSchema);

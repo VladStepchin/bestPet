@@ -1,8 +1,7 @@
 class AuthJWTController {
   constructor(jwtAuthProvider) {
-    this.jwtAuthProvider = jwtAuthProvider;
+    this.jwtAuthProvider = jwtAuthProvider
   }
-
   async registrationJWT(req, res) {
     const anonymousUser = {
       email: req.body.email,

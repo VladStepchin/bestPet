@@ -32,8 +32,7 @@ class PostService {
       ? postToUpdate.likedBy.pull(userId)
       : postToUpdate.likedBy.push(userId);
 
-    //todo:add to the Mongoose as a function?
-    postToUpdate.likes = postToUpdate.likedBy.length;
+    postToUpdate.updateLikes();
     await this.repository.update(postId, postToUpdate);
 
     return postToUpdate.populate("likedBy");

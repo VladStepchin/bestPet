@@ -67,11 +67,12 @@ class PostController {
 
     return res.json({
       likes: updatedPost.likedBy.length,
-      likedBy: updatedPost.likedBy.map((_) => _.email),
+      likedBy: updatedPost.likedBy.map(_=> _.email),
     });
   }
 
   async getRandomImage(req, res, next) {
+    //previously there were th module which randomly generated the images
     return res.json({
       imageUrl: "https://purr.objects-us-east-1.dream.io/i/AS1or.jpg",
     });

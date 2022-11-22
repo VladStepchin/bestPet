@@ -27,6 +27,7 @@ exports.auth = (req,res,next) => {
     }
 }
 
+//do not meet the DRY principle, and should be done on front-end
 exports.showNameMiddleware = (req,res,next) => {
     if(req.user || req.method === 'OPTIONS'){
         return next();

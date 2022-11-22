@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const passport = require("passport");
+
 const HttpError = require("../modules/Utils");
 const authMiddleware = require("../middleware/AuthMiddleware");
 const fileUploadMiddleware = require("../middleware/fileUploadMiddleware");
@@ -10,33 +10,24 @@ const AuthJWTController = require("../controllers/AuthJWTController");
 const Repository = require("../core/Repository");
 const UserService = require("../modules/UserService");
 const RoleService = require("../modules/RoleService");
-const JWTAuthProvider = require("../modules/JWTAuthProvider");
+const JWTAuthService = require("../modules/JWTAuthService");
+const GoogleAuthController = require("../controllers/GoogleAuthController");
 
-const jwtAuthProvider = new JWTAuthProvider(
+const jwtAuthService = new JWTAuthService(
   new UserService(new Repository(User)),
   new RoleService(new Repository(Role))
 );
-const authJWTController = new AuthJWTController(jwtAuthProvider);
 
-require("../controllers/GoogleAuthController");
+const authJWTController = new AuthJWTController(jwtAuthService);
 
-const login = require("./test");
+router.get("/failed", GoogleAuthController.failedToLogin);
 
-router.get("/failed", (req, res) => {
-  return new HttpError("Login via Google failed");
-});
-
-router.get(
-  "/login", login
-  
-);
+router.get("/login", GoogleAuthController.login);
 
 router.get(
   "/login/callback",
-  passport.authenticate("google", { failureRedirect: "/failed" }),
-  (req, res) => {
-    res.redirect("/");
-  }
+  GoogleAuthController.authenticate,
+  GoogleAuthController.redirectToStart
 );
 
 router.get("/logout",

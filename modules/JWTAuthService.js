@@ -36,6 +36,7 @@ class JWTAuthProvider {
         poster: anonymousUser.userPoster || "",
         roles: [userRole.value],
       });
+      console.log(user);
       return { message: "User has been successfully created" };
     } catch (err) {
       console.log(err);
